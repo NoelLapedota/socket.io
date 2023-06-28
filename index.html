@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Include Socket.IO library -->
+    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <!-- Include your custom JavaScript file -->
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      /* Styling for the chat form */
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      /* Styling for chat messages */
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+  </body>
+  <script>
+    // Create a socket connection
+    var socket = io();
+    var messageContainer = document.getElementById('message-container');
+    var form = document.getElementById('form');
+    var messageInput = document.getElementById('message-input');
+    var notificationSound = new Audio('notification-sound.mp3');
+
+    // Prompt the user to enter their name
+    const name = prompt('What is your name?');
+    appendMessage('You joined');
+    socket.emit('new-user', name);
+
+    // Listen for user connections and disconnections
+    socket.on('user-connected', (data) => {
+      appendMessage(name, 'is connected');
+    });
+    socket.on('user-disconnected', (data) => {
+      appendMessage(name, 'is connected');
+    });
+
+    // Submit the chat message form
+    messageForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (messageInput.value) {
+        socket.emit('send-chat-message', message);
+        messageInput.value = '';
+      }
+    });
+
+    // Function to append a new message to the chat
+    function appendMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.innerText = message;
+      messageContainer.append(messageElement);
+    }
+
+    // Listen for incoming chat messages
+    socket.on('chat message', function (data) {
+      appendMessage(data);
+    });
+  </script>
+</html>
