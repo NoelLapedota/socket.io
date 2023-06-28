@@ -1,0 +1,1 @@
+pure exercise in style to become familiar with socket.io. I used node js.
