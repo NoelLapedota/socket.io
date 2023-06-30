@@ -67,11 +67,11 @@
   </body>
   <script>
     // Create a socket connection
-    var socket = io();
-    var messageContainer = document.getElementById('message-container');
-    var form = document.getElementById('form');
-    var messageInput = document.getElementById('message-input');
-    var notificationSound = new Audio('notification-sound.mp3');
+    let socket = io();
+    let messageContainer = document.getElementById('message-container');
+    let form = document.getElementById('form');
+    let messageInput = document.getElementById('message-input');
+    let notificationSound = new Audio('notification-sound.mp3');
 
     // Prompt the user to enter their name
     const name = prompt('What is your name?');
